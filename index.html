@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Practice | And Exercise</title>
+    
+    <!-- icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        /* this code is changed in media queries */
+        *, ::before, ::after {margin: 0; box-sizing: border-box;}
+        button{padding: 0; cursor: pointer;}
+        html{font-family: system-ui, sans-serif; font-size: 15px;}
+        label {color: rgb(224, 194, 194); font-size: 18px;}
+        img{vertical-align: bottom;}
+        h1{font-size: 2.5rem;}
+        h2{font-size: 2rem; color: #fff;}
+        h3{font-size: 1.4rem; margin: 0.8rem; color: rgb(168, 255, 131); text-align: center; margin-bottom: 1rem;}
+        h4{font-size: 1.2rem;}
+
+        .btn, select, [type="submit"], input[type="reset"], input[type="text"],input[type="number"],input[type="password"],input[type="search"],input[type="email"],.input{ height: 36px; padding: 8px 12px; border: 1px solid #e9dbdb; color: inherit; border-radius: 5px; vertical-align: middle; margin: 5px;}
+       
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(186, 170, 237, 0.709), rgb(75, 75, 128), rgb(6, 6, 89));
+        }
+
+        .container {
+            text-align: center;
+            width: 300px;
+            margin: 0 10px;
+            box-shadow: 0 0 6px rgb(44, 45, 33);
+            border-radius: 10px;
+            padding: 1rem 0.5rem;
+            background: linear-gradient(180deg, #4b4b80, #61618e, #b5d9e7b5);
+            /* background: linear-gradient(180deg, #e5f0c9b5, #4b4b80, #060659); */
+            color: rgb(253, 255, 219);
+        }
+
+        .row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container #search {
+            display: block;
+            width: 90%;
+            margin: 1rem auto;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: transparent;
+            outline: none;
+        }
+        #search::placeholder {color: rgb(247, 217, 217);}
+        .col-right .temp {font-size: 3rem; font-weight: 500;}
+
+        .flex-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            margin: 1rem auto 0.5rem;
+            color: rgb(105, 51, 51);
+            font-weight: 600;
+        }
+        .flex-row img {margin-right: 5px;}
+
+    </style>
+</head>
+
+<body id="myBody">
+
+    <div class="container">
+        <h2 class="title">Weather App</h2>
+        <form action="#">
+            <input id="search" type="search" placeholder="Enter city name">
+        </form>
+        <div id="weather" class="row">
+            <div class="col-left">
+                <img id="icon" src="./img/weather_icon.png" alt="icon" width="100">
+            </div>
+            <div class="col-right">
+                <p class="temp">32&#8451;</p>
+            </div>
+            <h4 class="city-name" style="text-align: center; font-size: 1.4rem;">Delhi</h4>
+            <p class="status" style="text-align: center; font-size: 1.4rem;">Clear</p>
+        </div>
+        
+        <div class="flex-row">
+            <div class="flex-row">
+                <img src="./img/humidity_icon.png" width="30" alt="humidity">
+                <span id="humidity">Humidity</span>
+            </div> 
+            <div class="flex-row">
+                <img src="./img/wind_icon.png" width="30" alt="wind">
+                <span id="wind">Wind Speed</span>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+
+        const apiKey = `648d7a3f4491c4e7cbf5107e2d4abe8a`;
+        // const apin = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+        // const imgUrl = `https://api.openweathermap.org/img/wn${data.weather[0].icon}@2x.png`;
+
+        const form = document.querySelector("form");
+        const weather = document.querySelector("#weather");
+        const search = document.querySelector("#search");
+
+        let status = document.querySelector(".status");
+        let temp = document.querySelector(".temp");
+        let icon = document.querySelector("#icon");
+        let cityName = document.querySelector(".city-name");
+        let humidity = document.querySelector("#humidity");
+        let wind = document.querySelector("#wind");
+
+        const getWeather = async(city) => {
+            cityName.innerHTML = "Loading..";
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const response = await fetch(url);
+            const data = await response.json();
+            if(data.cod == "404") {
+                cityName.innerHTML = "City not found";
+                return;
+            } 
+            temp.innerHTML = `${Math.floor(data.main.temp)}<span>&#8451</span>`;
+            status.innerHTML = `${data.weather[0].main}`;
+            icon.src = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+            cityName.innerHTML = `${data.name}`;
+            humidity.innerHTML = `${data.main.humidity}%`;
+            wind.innerHTML = `${data.wind.speed} km/h`;
+            console.log(data);
+        };
+
+        form.addEventListener("submit", function(e) {
+            getWeather(search.value);
+            e.preventDefault();
+        });
+
+
+    </script>
+    
+</body>
+</html>
+
+
+

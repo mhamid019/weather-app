@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JS Practice | And Exercise</title>
+    <title>check your weather</title>
     
     <!-- icon library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <style>
 
@@ -19,7 +20,7 @@
         img{vertical-align: bottom;}
         h1{font-size: 2.5rem;}
         h2{font-size: 2rem; color: #fff;}
-        h3{font-size: 1.4rem; margin: 0.8rem; color: rgb(168, 255, 131); text-align: center; margin-bottom: 1rem;}
+        h3{font-size: 1.4rem; margin: 0.8rem; color: rgb(157, 251, 117); text-align: center;}
         h4{font-size: 1.2rem;}
 
         .btn, select, [type="submit"], input[type="reset"], input[type="text"],input[type="number"],input[type="password"],input[type="search"],input[type="email"],.input{ height: 36px; padding: 8px 12px; border: 1px solid #e9dbdb; color: inherit; border-radius: 5px; vertical-align: middle; margin: 5px;}
@@ -29,7 +30,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(180deg, rgba(186, 170, 237, 0.709), rgb(75, 75, 128), rgb(6, 6, 89));
+            background: linear-gradient(180deg, rgba(144, 147, 243, 0.709), rgb(75, 75, 128), rgb(6, 6, 89));
         }
 
         .container {
@@ -44,6 +45,14 @@
             color: rgb(253, 255, 219);
         }
 
+        .form {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {background: #0e1957; width: 20%;}
+
         .row {
             display: flex;
             flex-direction: column;
@@ -51,10 +60,8 @@
         }
         .container #search {
             display: block;
-            width: 90%;
-            margin: 1rem auto;
+            width: 80%;
             font-weight: bold;
-            margin-bottom: 1rem;
             background: transparent;
             outline: none;
         }
@@ -71,19 +78,28 @@
         }
         .flex-row img {margin-right: 5px;}
 
+        @media screen and (max-width: 600px) {
+
+            .container {min-width: 260px;}
+            .container .col-right .temp {
+                font-size: 2rem;
+            }
+        }
+
     </style>
 </head>
 
 <body id="myBody">
 
     <div class="container">
-        <h2 class="title">Weather App</h2>
-        <form action="#">
-            <input id="search" type="search" placeholder="Enter city name">
+        <h3 class="title">Weather App</h3>
+        <form class="form">
+            <input id="search" type="search" placeholder="Enter city name" required>
+            <button class="btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         <div id="weather" class="row">
             <div class="col-left">
-                <img id="icon" src="./img/weather_icon.png" alt="icon" width="100">
+                <img id="icon" src="./img/weather_icon.png" alt="icon" width="100" height="100" draggable="false">
             </div>
             <div class="col-right">
                 <p class="temp">32&#8451;</p>
@@ -94,11 +110,11 @@
         
         <div class="flex-row">
             <div class="flex-row">
-                <img src="./img/humidity_icon.png" width="30" alt="humidity">
+                <img src="./img/humidity_icon.png" width="30" height="30" alt="humidity" draggable="false">
                 <span id="humidity">Humidity</span>
             </div> 
             <div class="flex-row">
-                <img src="./img/wind_icon.png" width="30" alt="wind">
+                <img src="./img/wind_icon.png" width="30" height="30" alt="wind" draggable="false">
                 <span id="wind">Wind Speed</span>
             </div>
         </div>
@@ -111,9 +127,10 @@
         // const apin = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
         // const imgUrl = `https://api.openweathermap.org/img/wn${data.weather[0].icon}@2x.png`;
 
-        const form = document.querySelector("form");
+        const form = document.querySelector(".form");
         const weather = document.querySelector("#weather");
         const search = document.querySelector("#search");
+        const btn = document.querySelector(".btn");
 
         let status = document.querySelector(".status");
         let temp = document.querySelector(".temp");
@@ -141,10 +158,15 @@
         };
 
         form.addEventListener("submit", function(e) {
+            btn.disabled = true;
             getWeather(search.value);
             e.preventDefault();
         });
-
+        
+        search.addEventListener("change", ()=> {
+            btn.disabled = false;
+            search.style.background = "#0e1957";
+        });
 
     </script>
     

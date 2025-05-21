@@ -154,13 +154,14 @@
             cityName.innerHTML = `${data.name}`;
             humidity.innerHTML = `${data.main.humidity}%`;
             wind.innerHTML = `${data.wind.speed} km/h`;
-            console.log(data);
+            // console.log(data);
         };
 
         form.addEventListener("submit", function(e) {
+            e.preventDefault();
             btn.disabled = true;
             getWeather(search.value);
-            e.preventDefault();
+            search.value.trim();
         });
         
         search.addEventListener("change", ()=> {
